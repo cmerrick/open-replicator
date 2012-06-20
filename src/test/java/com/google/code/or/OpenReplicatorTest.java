@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.code.or.binlog.BinlogEventListener;
 import com.google.code.or.binlog.BinlogEventV4;
-import com.google.code.or.binlog.impl.event.XidEvent;
 import com.google.code.or.logging.Log4jInitializer;
 
 public class OpenReplicatorTest {
@@ -25,18 +24,16 @@ public class OpenReplicatorTest {
 		
 		//
 		final OpenReplicator or = new OpenReplicator();
-		or.setUser("xjq");
+		or.setUser("root");
 		or.setPassword("123456");
 		or.setHost("localhost");
 		or.setPort(3306);
 		or.setServerId(6789);
 		or.setBinlogPosition(4);
-		or.setBinlogFileName("mysql_bin.000050");
+		or.setBinlogFileName("mysql_bin.000001");
 		or.setBinlogEventListener(new BinlogEventListener() {
 		    public void onEvents(BinlogEventV4 event) {
-		    	if(event instanceof XidEvent) {
-		    		LOGGER.info("{}", event);
-		    	}
+		    	LOGGER.info("{}", event);
 		    }
 		});
 		or.start();

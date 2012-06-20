@@ -132,7 +132,7 @@ public class GreetingPacket extends AbstractPacket {
 		r.serverStatus = d.readInt(2);
 		d.skip(13); // reserved, all 0
 		r.scramble2 = d.readNullTerminatedString();
-		r.pluginProvidedData = d.readNullTerminatedString();
+		if(d.hasMore()) r.pluginProvidedData = d.readNullTerminatedString();
 		return r;
 	}
 }

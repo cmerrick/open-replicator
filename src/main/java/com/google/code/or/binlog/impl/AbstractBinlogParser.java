@@ -50,6 +50,7 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 	protected ThreadFactory threadFactory;
 	protected BinlogEventFilter eventFilter;
 	protected BinlogEventListener eventListener;
+	protected boolean clearTableMapEventsOnRotate = false;
 	protected final AtomicBoolean verbose = new AtomicBoolean(false);
 	protected final AtomicBoolean running = new AtomicBoolean(false);
 	protected final BinlogEventParser defaultParser = new NopEventParser();
@@ -141,6 +142,14 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 		this.eventListener = listener;
 	}
 	
+	public boolean isClearTableMapEventsOnRotate() {
+		return clearTableMapEventsOnRotate;
+	}
+	
+	public void setClearTableMapEventsOnRotate(boolean clearTableMapEventsOnRotate) {
+		this.clearTableMapEventsOnRotate = clearTableMapEventsOnRotate;
+	}
+	
 	/**
 	 * 
 	 */
@@ -194,7 +203,7 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 	protected class Context implements BinlogParserContext, BinlogEventListener {
 		//
 		private String binlogFileName;
-		private final Map<Long, TableMapEvent> tableMaps = new HashMap<Long, TableMapEvent>();
+		private final Map<Long, TableMapEvent> tableMapEvents = new HashMap<Long, TableMapEvent>();
 
 		/**
 		 * 
@@ -222,7 +231,7 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 		}
 
 		public TableMapEvent getTableMapEvent(long tableId) {
-			return this.tableMaps.get(tableId);
+			return this.tableMapEvents.get(tableId);
 		}
 		
 		/**
@@ -237,10 +246,16 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 			//
 			if(event instanceof TableMapEvent) {
 				final TableMapEvent tme = (TableMapEvent)event;
-				this.tableMaps.put(tme.getTableId(), tme);
+				this.tableMapEvents.put(tme.getTableId(), tme);
 			} else if(event instanceof RotateEvent) {
+				//
 				final RotateEvent re = (RotateEvent)event;
 				this.binlogFileName = re.getBinlogFileName().toString();
+				
+				//
+				if(isClearTableMapEventsOnRotate()) {
+					this.tableMapEvents.clear();
+				}
 			}
 			
 			//

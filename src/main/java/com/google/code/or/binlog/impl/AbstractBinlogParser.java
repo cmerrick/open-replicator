@@ -50,7 +50,7 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 	protected ThreadFactory threadFactory;
 	protected BinlogEventFilter eventFilter;
 	protected BinlogEventListener eventListener;
-	protected boolean clearTableMapEventsOnRotate = true;
+	protected boolean clearTableMapEventsOnRotate = false;
 	protected final AtomicBoolean verbose = new AtomicBoolean(false);
 	protected final AtomicBoolean running = new AtomicBoolean(false);
 	protected final BinlogEventParser defaultParser = new NopEventParser();

@@ -218,19 +218,19 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 		/**
 		 * 
 		 */
-		public String getBinlogFileName() {
+		public final String getBinlogFileName() {
 			return binlogFileName;
 		}
 
-		public void setBinlogFileName(String name) {
+		public final void setBinlogFileName(String name) {
 			this.binlogFileName = name;
 		}
 		
-		public BinlogEventListener getEventListener() {
+		public final BinlogEventListener getEventListener() {
 			return this;
 		}
 
-		public TableMapEvent getTableMapEvent(long tableId) {
+		public final TableMapEvent getTableMapEvent(long tableId) {
 			return this.tableMapEvents.get(tableId);
 		}
 		

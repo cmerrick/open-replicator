@@ -248,14 +248,9 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 				final TableMapEvent tme = (TableMapEvent)event;
 				this.tableMapEvents.put(tme.getTableId(), tme);
 			} else if(event instanceof RotateEvent) {
-				//
 				final RotateEvent re = (RotateEvent)event;
 				this.binlogFileName = re.getBinlogFileName().toString();
-				
-				//
-				if(isClearTableMapEventsOnRotate()) {
-					this.tableMapEvents.clear();
-				}
+				if(isClearTableMapEventsOnRotate()) this.tableMapEvents.clear();
 			}
 			
 			//

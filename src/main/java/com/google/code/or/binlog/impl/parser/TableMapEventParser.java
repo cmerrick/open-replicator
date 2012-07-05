@@ -30,7 +30,7 @@ import com.google.code.or.io.XInputStream;
  */
 public class TableMapEventParser extends AbstractBinlogEventParser {
 	// 
-	private boolean reusePreviousEvent = false; // Note: use with caution!
+	private boolean reusePreviousEvent = true;
 
 	/**
 	 * 

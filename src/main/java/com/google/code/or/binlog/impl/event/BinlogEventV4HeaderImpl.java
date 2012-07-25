@@ -33,7 +33,7 @@ public final class BinlogEventV4HeaderImpl implements BinlogEventV4Header {
 	private long eventLength;
 	private long nextPosition;
 	private int flags;
-	
+	private long timestampOfReceipt;
 	
 	/**
 	 * 
@@ -46,7 +46,8 @@ public final class BinlogEventV4HeaderImpl implements BinlogEventV4Header {
 		.append("serverId", serverId)
 		.append("eventLength", eventLength)
 		.append("nextPosition", nextPosition)
-		.append("flags", flags).toString();
+		.append("flags", flags)
+		.append("timestampOfReceipt", timestampOfReceipt).toString();
 	}
 	
 	/**
@@ -109,5 +110,13 @@ public final class BinlogEventV4HeaderImpl implements BinlogEventV4Header {
 	
 	public void setFlags(int flags) {
 		this.flags = flags;
+	}
+	
+	public long getTimestampOfReceipt() {
+		return timestampOfReceipt;
+	}
+
+	public void setTimestampOfReceipt(long timestampOfReceipt) {
+		this.timestampOfReceipt = timestampOfReceipt;
 	}
 }

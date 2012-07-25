@@ -105,6 +105,7 @@ public class ReplicationBasedBinlogParser extends AbstractBinlogParser {
 				header.setEventLength(is.readInt(4));
 				header.setNextPosition(is.readLong(4));
 				header.setFlags(is.readInt(2));
+				header.setTimestampOfReceipt(System.currentTimeMillis());
 				if(isVerbose() && LOGGER.isInfoEnabled()) {
 					LOGGER.info("received an event, sequence: {}, header: {}", packetSequence, header);
 				}

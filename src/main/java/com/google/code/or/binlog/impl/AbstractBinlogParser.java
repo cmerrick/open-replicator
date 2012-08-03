@@ -104,18 +104,20 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 		}
 		
 		//
-		final long now = System.nanoTime();
-		doStop(timeout, unit);
-		timeout -= unit.convert(System.nanoTime() - now, TimeUnit.NANOSECONDS);
-		
-		//
-		if(timeout > 0) {
-			unit.timedJoin(this.worker, timeout);
-			this.worker = null;
+		try {
+			//
+			final long now = System.nanoTime();
+			doStop(timeout, unit);
+			timeout -= unit.convert(System.nanoTime() - now, TimeUnit.NANOSECONDS);
+			
+			//
+			if(timeout > 0) {
+				unit.timedJoin(this.worker, timeout);
+				this.worker = null;
+			}
+		} finally {
+			notifyOnStop();
 		}
-		
-		//
-		notifyOnStop();
 	}
 	
 	/**

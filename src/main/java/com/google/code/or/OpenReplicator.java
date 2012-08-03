@@ -123,7 +123,7 @@ public class OpenReplicator {
 		try {
 			stop(0, TimeUnit.MILLISECONDS);
 		} catch(Exception e) {
-			LOGGER.error("failed to stop open replicator", e);
+			// NOP
 		}
 	}
 	

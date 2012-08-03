@@ -101,7 +101,7 @@ public class OpenReplicator {
 		this.binlogParser.setEventListener(this.binlogEventListener);
 		this.binlogParser.addParserListener(new BinlogParserListener.Adapter() {
 			@Override
-			public void onException(BinlogParser parser, Exception eception) {
+			public void onStop(BinlogParser parser) {
 				try {
 					stop(0, TimeUnit.MILLISECONDS);
 				} catch(Exception e) {

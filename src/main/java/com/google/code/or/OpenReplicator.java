@@ -19,8 +19,12 @@ package com.google.code.or;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.code.or.binlog.BinlogEventListener;
 import com.google.code.or.binlog.BinlogParser;
+import com.google.code.or.binlog.BinlogParserListener;
 import com.google.code.or.binlog.impl.ReplicationBasedBinlogParser;
 import com.google.code.or.binlog.impl.parser.DeleteRowsEventParser;
 import com.google.code.or.binlog.impl.parser.FormatDescriptionEventParser;
@@ -50,6 +54,9 @@ import com.google.code.or.net.impl.packet.command.ComBinlogDumpPacket;
  * @author Jingqi Xu
  */
 public class OpenReplicator {
+	//
+	private static final Logger LOGGER = LoggerFactory.getLogger(OpenReplicator.class);
+	
 	//
 	protected int port = 3306;
 	protected String host;
@@ -92,6 +99,16 @@ public class OpenReplicator {
 		//
 		if(this.binlogParser == null) this.binlogParser = getDefaultBinlogParser();
 		this.binlogParser.setEventListener(this.binlogEventListener);
+		this.binlogParser.addParserListener(new BinlogParserListener.Adapter() {
+			@Override
+			public void onException(BinlogParser parser, Exception eception) {
+				try {
+					stop(0, TimeUnit.MILLISECONDS);
+				} catch(Exception e) {
+					LOGGER.error("failed to stop open replicator", e);
+				}
+			}
+		});
 		this.binlogParser.start();
 	}
 

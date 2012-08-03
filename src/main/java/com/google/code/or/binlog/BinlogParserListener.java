@@ -16,40 +16,33 @@
  */
 package com.google.code.or.binlog;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
 /**
  * 
  * @author Jingqi Xu
- * @see http://forge.mysql.com/wiki/MySQL_Internals
  */
-public interface BinlogParser {
+public interface BinlogParserListener {
 	
 	/**
 	 * 
 	 */
-	boolean isRunning();
+	void onStart(BinlogParser parser);
 	
-	void start() throws Exception;
+	void onStop(BinlogParser parser);
 	
-	void stop(long timeout, TimeUnit unit) throws Exception;
-	
-	/**
-	 * 
-	 */
-	void setEventFilter(BinlogEventFilter filter);
-	
-	void setEventListener(BinlogEventListener listener);
+	void onException(BinlogParser parser, Exception eception);
 	
 	/**
 	 * 
 	 */
-	List<BinlogParserListener> getParserListeners();
-	
-	boolean addParserListener(BinlogParserListener listener);
-	
-	boolean removeParserListener(BinlogParserListener listener);
-	
-	void setParserListeners(List<BinlogParserListener> listeners);
+	class Adapter implements BinlogParserListener {
+
+		public void onStart(BinlogParser parser) {
+		}
+
+		public void onStop(BinlogParser parser) {
+		}
+
+		public void onException(BinlogParser parser, Exception eception) {
+		}
+	}
 }

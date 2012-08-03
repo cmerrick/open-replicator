@@ -42,7 +42,7 @@ public interface BinlogParserListener {
 		public void onStop(BinlogParser parser) {
 		}
 
-		public void onException(BinlogParser parser, Exception eception) {
+		public void onException(BinlogParser parser, Exception exception) {
 		}
 	}
 }

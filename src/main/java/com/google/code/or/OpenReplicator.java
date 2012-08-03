@@ -115,7 +115,7 @@ public class OpenReplicator {
 	
 	public void stopQuietly(long timeout, TimeUnit unit) {
 		try {
-			stop(0, TimeUnit.MILLISECONDS);
+			stop(timeout, unit);
 		} catch(Exception e) {
 			// NOP
 		}

@@ -102,11 +102,7 @@ public class OpenReplicator {
 		this.binlogParser.addParserListener(new BinlogParserListener.Adapter() {
 			@Override
 			public void onStop(BinlogParser parser) {
-				try {
-					stop(0, TimeUnit.MILLISECONDS);
-				} catch(Exception e) {
-					LOGGER.error("failed to stop open replicator", e);
-				}
+				stopQuietly(0, TimeUnit.MILLISECONDS);
 			}
 		});
 		this.binlogParser.start();
@@ -121,6 +117,14 @@ public class OpenReplicator {
 		//
 		this.transport.disconnect();
 		this.binlogParser.stop(timeout, unit);
+	}
+	
+	public void stopQuietly(long timeout, TimeUnit unit) {
+		try {
+			stop(0, TimeUnit.MILLISECONDS);
+		} catch(Exception e) {
+			LOGGER.error("failed to stop open replicator", e);
+		}
 	}
 	
 	/**

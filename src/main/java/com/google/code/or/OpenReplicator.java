@@ -19,9 +19,6 @@ package com.google.code.or;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.code.or.binlog.BinlogEventListener;
 import com.google.code.or.binlog.BinlogParser;
 import com.google.code.or.binlog.BinlogParserListener;
@@ -54,9 +51,6 @@ import com.google.code.or.net.impl.packet.command.ComBinlogDumpPacket;
  * @author Jingqi Xu
  */
 public class OpenReplicator {
-	//
-	private static final Logger LOGGER = LoggerFactory.getLogger(OpenReplicator.class);
-	
 	//
 	protected int port = 3306;
 	protected String host;

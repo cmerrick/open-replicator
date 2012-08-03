@@ -241,8 +241,8 @@ public abstract class AbstractBinlogParser implements BinlogParser {
 			try {
 				doParse();
 			} catch (Exception e) {
-				LOGGER.error("failed to parse binlog", e);
 				notifyOnException(e);
+				LOGGER.error("failed to parse binlog", e);
 			} finally {
 				try {
 					stop(0, TimeUnit.MILLISECONDS);

@@ -97,6 +97,11 @@ public final class MySQLConstants {
 	public static final int Q_TABLE_MAP_FOR_UPDATE_CODE = 9;
 	public static final int Q_MASTER_DATA_WRITTEN_CODE = 10;
 	public static final int Q_INVOKER = 11;
+	public static final int Q_UPDATED_DB_NAMES = 12;
+	public static final int Q_MICROSECONDS = 13;
+	
+	public static final int MAX_DBS_IN_EVENT_MTS = 16;
+	public static final int OVER_MAX_DBS_IN_EVENT_MTS = 254;
 	
 	// User variable type
 	public static final int STRING_RESULT = 0;

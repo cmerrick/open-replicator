@@ -31,7 +31,7 @@ import com.google.code.or.binlog.impl.parser.QueryEventParser;
 import com.google.code.or.binlog.impl.parser.RandEventParser;
 import com.google.code.or.binlog.impl.parser.RotateEventParser;
 import com.google.code.or.binlog.impl.parser.StopEventParser;
-import com.google.code.or.binlog.impl.parser.TableMapEventV1Parser;
+import com.google.code.or.binlog.impl.parser.TableMapEventParser;
 import com.google.code.or.binlog.impl.parser.UpdateRowsEventV1Parser;
 import com.google.code.or.binlog.impl.parser.UserVarEventParser;
 import com.google.code.or.binlog.impl.parser.WriteRowsEventV1Parser;
@@ -293,7 +293,7 @@ public class OpenReplicator {
 		r.registgerEventParser(new QueryEventParser());
 		r.registgerEventParser(new UserVarEventParser());
 		r.registgerEventParser(new IncidentEventParser());
-		r.registgerEventParser(new TableMapEventV1Parser());
+		r.registgerEventParser(new TableMapEventParser());
 		r.registgerEventParser(new WriteRowsEventV1Parser());
 		r.registgerEventParser(new DeleteRowsEventV1Parser());
 		r.registgerEventParser(new UpdateRowsEventV1Parser());

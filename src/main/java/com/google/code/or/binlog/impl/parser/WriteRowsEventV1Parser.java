@@ -23,7 +23,7 @@ import java.util.List;
 import com.google.code.or.binlog.BinlogEventV4Header;
 import com.google.code.or.binlog.BinlogParserContext;
 import com.google.code.or.binlog.impl.event.TableMapEvent;
-import com.google.code.or.binlog.impl.event.WriteRowsEvent;
+import com.google.code.or.binlog.impl.event.WriteRowsEventV1;
 import com.google.code.or.common.glossary.Row;
 import com.google.code.or.io.XInputStream;
 
@@ -31,13 +31,13 @@ import com.google.code.or.io.XInputStream;
  * 
  * @author Jingqi Xu
  */
-public class WriteRowsEventParser extends AbstractRowEventParser {
+public class WriteRowsEventV1Parser extends AbstractRowEventParser {
 
 	/**
 	 * 
 	 */
-	public WriteRowsEventParser() {
-		super(WriteRowsEvent.EVENT_TYPE);
+	public WriteRowsEventV1Parser() {
+		super(WriteRowsEventV1.EVENT_TYPE);
 	}
 	
 	/**
@@ -54,7 +54,7 @@ public class WriteRowsEventParser extends AbstractRowEventParser {
 		}
 		
 		//
-		final WriteRowsEvent event = new WriteRowsEvent(header);
+		final WriteRowsEventV1 event = new WriteRowsEventV1(header);
 		event.setTableId(tableId);
 		event.setReserved(is.readInt(2));
 		event.setColumnCount(is.readUnsignedLong()); 
@@ -66,7 +66,7 @@ public class WriteRowsEventParser extends AbstractRowEventParser {
 	/**
 	 * 
 	 */
-	protected List<Row> parseRows(XInputStream is, TableMapEvent tme, WriteRowsEvent wre)
+	protected List<Row> parseRows(XInputStream is, TableMapEvent tme, WriteRowsEventV1 wre)
 	throws IOException {
 		final List<Row> r = new LinkedList<Row>();
 		while(is.available() > 0) {

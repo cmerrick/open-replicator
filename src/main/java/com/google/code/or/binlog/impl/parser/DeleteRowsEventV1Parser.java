@@ -22,9 +22,8 @@ import java.util.List;
 
 import com.google.code.or.binlog.BinlogEventV4Header;
 import com.google.code.or.binlog.BinlogParserContext;
+import com.google.code.or.binlog.impl.event.DeleteRowsEventV1;
 import com.google.code.or.binlog.impl.event.TableMapEvent;
-import com.google.code.or.binlog.impl.event.UpdateRowsEvent;
-import com.google.code.or.common.glossary.Pair;
 import com.google.code.or.common.glossary.Row;
 import com.google.code.or.io.XInputStream;
 
@@ -32,13 +31,13 @@ import com.google.code.or.io.XInputStream;
  * 
  * @author Jingqi Xu
  */
-public class UpdateRowsEventParser extends AbstractRowEventParser {
+public class DeleteRowsEventV1Parser extends AbstractRowEventParser {
 
 	/**
 	 * 
 	 */
-	public UpdateRowsEventParser() {
-		super(UpdateRowsEvent.EVENT_TYPE);
+	public DeleteRowsEventV1Parser() {
+		super(DeleteRowsEventV1.EVENT_TYPE);
 	}
 	
 	/**
@@ -55,12 +54,11 @@ public class UpdateRowsEventParser extends AbstractRowEventParser {
 		}
 		
 		//
-		final UpdateRowsEvent event = new UpdateRowsEvent(header);
+		final DeleteRowsEventV1 event = new DeleteRowsEventV1(header);
 		event.setTableId(tableId);
 		event.setReserved(is.readInt(2));
 		event.setColumnCount(is.readUnsignedLong()); 
-		event.setUsedColumnsBefore(is.readBit(event.getColumnCount().intValue(), true));
-		event.setUsedColumnsAfter(is.readBit(event.getColumnCount().intValue(), true));
+		event.setUsedColumns(is.readBit(event.getColumnCount().intValue(), true));
 		event.setRows(parseRows(is, tme, event));
 		context.getEventListener().onEvents(event);
 	}
@@ -68,13 +66,11 @@ public class UpdateRowsEventParser extends AbstractRowEventParser {
 	/**
 	 * 
 	 */
-	protected List<Pair<Row>> parseRows(XInputStream is, TableMapEvent tme, UpdateRowsEvent ure)
+	protected List<Row> parseRows(XInputStream is, TableMapEvent tme, DeleteRowsEventV1 dre)
 	throws IOException {
-		final List<Pair<Row>> r = new LinkedList<Pair<Row>>();
+		final List<Row> r = new LinkedList<Row>();
 		while(is.available() > 0) {
-			final Row before = parseRow(is, tme, ure.getUsedColumnsBefore());
-			final Row after = parseRow(is, tme, ure.getUsedColumnsAfter());
-			r.add(new Pair<Row>(before, after));
+			r.add(parseRow(is, tme, dre.getUsedColumns()));
 		}
 		return r;
 	}

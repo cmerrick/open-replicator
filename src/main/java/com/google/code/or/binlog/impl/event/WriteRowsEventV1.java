@@ -32,9 +32,9 @@ import com.google.code.or.common.util.MySQLConstants;
  * 
  * @author Jingqi Xu
  */
-public final class WriteRowsEvent extends AbstractRowEvent {
+public final class WriteRowsEventV1 extends AbstractRowEvent {
 	//
-	public static final int EVENT_TYPE = MySQLConstants.WRITE_ROWS_EVENT;
+	public static final int EVENT_TYPE = MySQLConstants.WRITE_ROWS_EVENT_V1;
 	
 	//
 	private UnsignedLong columnCount;
@@ -44,10 +44,10 @@ public final class WriteRowsEvent extends AbstractRowEvent {
 	/**
 	 * 
 	 */
-	public WriteRowsEvent() {
+	public WriteRowsEventV1() {
 	}
 	
-	public WriteRowsEvent(BinlogEventV4Header header) {
+	public WriteRowsEventV1(BinlogEventV4Header header) {
 		this.header = header;
 	}
 	

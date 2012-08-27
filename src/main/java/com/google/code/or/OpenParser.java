@@ -22,7 +22,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.google.code.or.binlog.BinlogEventListener;
 import com.google.code.or.binlog.BinlogParser;
 import com.google.code.or.binlog.impl.FileBasedBinlogParser;
-import com.google.code.or.binlog.impl.parser.DeleteRowsEventParser;
+import com.google.code.or.binlog.impl.parser.DeleteRowsEventV1Parser;
 import com.google.code.or.binlog.impl.parser.FormatDescriptionEventParser;
 import com.google.code.or.binlog.impl.parser.IncidentEventParser;
 import com.google.code.or.binlog.impl.parser.IntvarEventParser;
@@ -30,10 +30,10 @@ import com.google.code.or.binlog.impl.parser.QueryEventParser;
 import com.google.code.or.binlog.impl.parser.RandEventParser;
 import com.google.code.or.binlog.impl.parser.RotateEventParser;
 import com.google.code.or.binlog.impl.parser.StopEventParser;
-import com.google.code.or.binlog.impl.parser.TableMapEventParser;
-import com.google.code.or.binlog.impl.parser.UpdateRowsEventParser;
+import com.google.code.or.binlog.impl.parser.TableMapEventV1Parser;
+import com.google.code.or.binlog.impl.parser.UpdateRowsEventV1Parser;
 import com.google.code.or.binlog.impl.parser.UserVarEventParser;
-import com.google.code.or.binlog.impl.parser.WriteRowsEventParser;
+import com.google.code.or.binlog.impl.parser.WriteRowsEventV1Parser;
 import com.google.code.or.binlog.impl.parser.XidEventParser;
 
 /**
@@ -149,10 +149,10 @@ public class OpenParser {
 		r.registgerEventParser(new QueryEventParser());
 		r.registgerEventParser(new UserVarEventParser());
 		r.registgerEventParser(new IncidentEventParser());
-		r.registgerEventParser(new TableMapEventParser());
-		r.registgerEventParser(new WriteRowsEventParser());
-		r.registgerEventParser(new DeleteRowsEventParser());
-		r.registgerEventParser(new UpdateRowsEventParser());
+		r.registgerEventParser(new TableMapEventV1Parser());
+		r.registgerEventParser(new WriteRowsEventV1Parser());
+		r.registgerEventParser(new DeleteRowsEventV1Parser());
+		r.registgerEventParser(new UpdateRowsEventV1Parser());
 		r.registgerEventParser(new FormatDescriptionEventParser());
 		
 		//

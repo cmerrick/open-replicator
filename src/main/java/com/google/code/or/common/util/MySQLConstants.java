@@ -197,9 +197,18 @@ public final class MySQLConstants {
 	public static final int PRE_GA_WRITE_ROWS_EVENT  = 20;
 	public static final int PRE_GA_UPDATE_ROWS_EVENT  = 21;
 	public static final int PRE_GA_DELETE_ROWS_EVENT  = 22;
-	public static final int WRITE_ROWS_EVENT  = 23;
-	public static final int UPDATE_ROWS_EVENT  = 24;
-	public static final int DELETE_ROWS_EVENT  = 25;
+	public static final int WRITE_ROWS_EVENT_V1  = 23;
+	public static final int UPDATE_ROWS_EVENT_V1  = 24;
+	public static final int DELETE_ROWS_EVENT_V1  = 25;
 	public static final int INCIDENT_EVENT = 26;
 	public static final int HEARTBEAT_LOG_EVENT = 27;
+	
+//  IGNORABLE_LOG_EVENT= 28;
+//  ROWS_QUERY_LOG_EVENT= 29;
+//  WRITE_ROWS_EVENT = 30;
+//  UPDATE_ROWS_EVENT = 31;
+//  DELETE_ROWS_EVENT = 32;
+//  GTID_LOG_EVENT= 33;
+//  ANONYMOUS_GTID_LOG_EVENT= 34;
+//  PREVIOUS_GTIDS_LOG_EVENT= 35;
 }

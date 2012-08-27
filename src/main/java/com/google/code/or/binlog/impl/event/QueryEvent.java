@@ -60,6 +60,7 @@ public final class QueryEvent extends AbstractBinlogEventV4 {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
+		.append("header", header)
 		.append("threadId", threadId)
 		.append("elapsedTime", elapsedTime)
 		.append("databaseNameLength", databaseNameLength)

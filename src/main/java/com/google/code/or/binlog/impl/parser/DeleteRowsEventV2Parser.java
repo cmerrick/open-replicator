@@ -22,9 +22,8 @@ import java.util.List;
 
 import com.google.code.or.binlog.BinlogEventV4Header;
 import com.google.code.or.binlog.BinlogParserContext;
+import com.google.code.or.binlog.impl.event.DeleteRowsEventV2;
 import com.google.code.or.binlog.impl.event.TableMapEvent;
-import com.google.code.or.binlog.impl.event.UpdateRowsEventV1;
-import com.google.code.or.common.glossary.Pair;
 import com.google.code.or.common.glossary.Row;
 import com.google.code.or.io.XInputStream;
 
@@ -32,13 +31,13 @@ import com.google.code.or.io.XInputStream;
  * 
  * @author Jingqi Xu
  */
-public class UpdateRowsEventV1Parser extends AbstractRowEventParser {
+public class DeleteRowsEventV2Parser extends AbstractRowEventParser {
 
 	/**
 	 * 
 	 */
-	public UpdateRowsEventV1Parser() {
-		super(UpdateRowsEventV1.EVENT_TYPE);
+	public DeleteRowsEventV2Parser() {
+		super(DeleteRowsEventV2.EVENT_TYPE);
 	}
 	
 	/**
@@ -55,12 +54,13 @@ public class UpdateRowsEventV1Parser extends AbstractRowEventParser {
 		}
 		
 		//
-		final UpdateRowsEventV1 event = new UpdateRowsEventV1(header);
+		final DeleteRowsEventV2 event = new DeleteRowsEventV2(header);
 		event.setTableId(tableId);
 		event.setReserved(is.readInt(2));
+		event.setExtraInfoLength(is.readInt(2));
+		if(event.getExtraInfoLength() > 2) event.setExtraInfo(is.readBytes(event.getExtraInfoLength() - 2));
 		event.setColumnCount(is.readUnsignedLong()); 
-		event.setUsedColumnsBefore(is.readBit(event.getColumnCount().intValue(), true));
-		event.setUsedColumnsAfter(is.readBit(event.getColumnCount().intValue(), true));
+		event.setUsedColumns(is.readBit(event.getColumnCount().intValue(), true));
 		event.setRows(parseRows(is, tme, event));
 		context.getEventListener().onEvents(event);
 	}
@@ -68,13 +68,11 @@ public class UpdateRowsEventV1Parser extends AbstractRowEventParser {
 	/**
 	 * 
 	 */
-	protected List<Pair<Row>> parseRows(XInputStream is, TableMapEvent tme, UpdateRowsEventV1 ure)
+	protected List<Row> parseRows(XInputStream is, TableMapEvent tme, DeleteRowsEventV2 dre)
 	throws IOException {
-		final List<Pair<Row>> r = new LinkedList<Pair<Row>>();
+		final List<Row> r = new LinkedList<Row>();
 		while(is.available() > 0) {
-			final Row before = parseRow(is, tme, ure.getUsedColumnsBefore());
-			final Row after = parseRow(is, tme, ure.getUsedColumnsAfter());
-			r.add(new Pair<Row>(before, after));
+			r.add(parseRow(is, tme, dre.getUsedColumns()));
 		}
 		return r;
 	}

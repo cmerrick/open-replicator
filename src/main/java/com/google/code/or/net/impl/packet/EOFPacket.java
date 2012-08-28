@@ -21,6 +21,7 @@ import java.io.IOException;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import com.google.code.or.io.XInputStream;
 import com.google.code.or.io.util.XDeserializer;
 import com.google.code.or.io.util.XSerializer;
 import com.google.code.or.net.Packet;
@@ -101,6 +102,17 @@ public class EOFPacket extends AbstractPacket {
 		r.packetMarker = d.readInt(1);
 		r.warningCount = d.readInt(2);
 		r.serverStatus = d.readInt(2);
+		return r;
+	}
+
+	public static EOFPacket valueOf(int packetLength, int packetSequence, int packetMarker, XInputStream is) 
+	throws IOException {
+		final EOFPacket r = new EOFPacket();
+		r.length = packetLength;
+		r.sequence = packetSequence;
+		r.packetMarker = packetMarker;
+		r.warningCount = is.readInt(2);
+		r.serverStatus = is.readInt(2);
 		return r;
 	}
 }

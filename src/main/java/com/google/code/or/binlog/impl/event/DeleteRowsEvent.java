@@ -28,13 +28,13 @@ import com.google.code.or.common.glossary.column.BitColumn;
 import com.google.code.or.common.util.MySQLConstants;
 
 /**
- * Used for row-based binary logging. This event logs inserts of rows in a single table. 
+ * Used for row-based binary logging. This event logs deletions of rows in a single table. 
  * 
  * @author Jingqi Xu
  */
-public final class WriteRowsEventV1 extends AbstractRowEvent {
+public final class DeleteRowsEvent extends AbstractRowEvent {
 	//
-	public static final int EVENT_TYPE = MySQLConstants.WRITE_ROWS_EVENT_V1;
+	public static final int EVENT_TYPE = MySQLConstants.DELETE_ROWS_EVENT;
 	
 	//
 	private UnsignedLong columnCount;
@@ -44,10 +44,10 @@ public final class WriteRowsEventV1 extends AbstractRowEvent {
 	/**
 	 * 
 	 */
-	public WriteRowsEventV1() {
+	public DeleteRowsEvent() {
 	}
 	
-	public WriteRowsEventV1(BinlogEventV4Header header) {
+	public DeleteRowsEvent(BinlogEventV4Header header) {
 		this.header = header;
 	}
 	

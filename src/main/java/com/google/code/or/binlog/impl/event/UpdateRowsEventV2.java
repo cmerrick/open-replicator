@@ -33,11 +33,13 @@ import com.google.code.or.common.util.MySQLConstants;
  * 
  * @author Jingqi Xu
  */
-public final class UpdateRowsEventV1 extends AbstractRowEvent {
+public final class UpdateRowsEventV2 extends AbstractRowEvent {
 	//
-	public static final int EVENT_TYPE = MySQLConstants.UPDATE_ROWS_EVENT_V1;
+	public static final int EVENT_TYPE = MySQLConstants.UPDATE_ROWS_EVENT_V2;
 	
 	//
+	private int extraInfoLength;
+	private byte extraInfo[];
 	private UnsignedLong columnCount;
 	private BitColumn usedColumnsBefore;
 	private BitColumn usedColumnsAfter;
@@ -46,10 +48,10 @@ public final class UpdateRowsEventV1 extends AbstractRowEvent {
 	/**
 	 * 
 	 */
-	public UpdateRowsEventV1() {
+	public UpdateRowsEventV2() {
 	}
 	
-	public UpdateRowsEventV1(BinlogEventV4Header header) {
+	public UpdateRowsEventV2(BinlogEventV4Header header) {
 		this.header = header;
 	}
 	
@@ -62,6 +64,8 @@ public final class UpdateRowsEventV1 extends AbstractRowEvent {
 		.append("header", header)
 		.append("tableId", tableId)
 		.append("reserved", reserved)
+		.append("extraInfoLength", extraInfoLength)
+		.append("extraInfo", extraInfo)
 		.append("columnCount", columnCount)
 		.append("usedColumnsBefore", usedColumnsBefore)
 		.append("usedColumnsAfter", usedColumnsAfter)
@@ -71,6 +75,22 @@ public final class UpdateRowsEventV1 extends AbstractRowEvent {
 	/**
 	 * 
 	 */
+	public int getExtraInfoLength() {
+		return extraInfoLength;
+	}
+
+	public void setExtraInfoLength(int extraInfoLength) {
+		this.extraInfoLength = extraInfoLength;
+	}
+	
+	public byte[] getExtraInfo() {
+		return extraInfo;
+	}
+
+	public void setExtraInfo(byte[] extraInfo) {
+		this.extraInfo = extraInfo;
+	}
+	
 	public UnsignedLong getColumnCount() {
 		return columnCount;
 	}

@@ -22,8 +22,8 @@ import java.util.List;
 
 import com.google.code.or.binlog.BinlogEventV4Header;
 import com.google.code.or.binlog.BinlogParserContext;
-import com.google.code.or.binlog.impl.event.DeleteRowsEventV1;
 import com.google.code.or.binlog.impl.event.TableMapEvent;
+import com.google.code.or.binlog.impl.event.WriteRowsEventV2;
 import com.google.code.or.common.glossary.Row;
 import com.google.code.or.io.XInputStream;
 
@@ -31,13 +31,13 @@ import com.google.code.or.io.XInputStream;
  * 
  * @author Jingqi Xu
  */
-public class DeleteRowsEventV1Parser extends AbstractRowEventParser {
+public class WriteRowsEventV2Parser extends AbstractRowEventParser {
 
 	/**
 	 * 
 	 */
-	public DeleteRowsEventV1Parser() {
-		super(DeleteRowsEventV1.EVENT_TYPE);
+	public WriteRowsEventV2Parser() {
+		super(WriteRowsEventV2.EVENT_TYPE);
 	}
 	
 	/**
@@ -54,9 +54,11 @@ public class DeleteRowsEventV1Parser extends AbstractRowEventParser {
 		}
 		
 		//
-		final DeleteRowsEventV1 event = new DeleteRowsEventV1(header);
+		final WriteRowsEventV2 event = new WriteRowsEventV2(header);
 		event.setTableId(tableId);
 		event.setReserved(is.readInt(2));
+		event.setExtraInfoLength(is.readInt(2));
+		if(event.getExtraInfoLength() > 2) event.setExtraInfo(is.readBytes(event.getExtraInfoLength() - 2));
 		event.setColumnCount(is.readUnsignedLong()); 
 		event.setUsedColumns(is.readBit(event.getColumnCount().intValue(), true));
 		event.setRows(parseRows(is, tme, event));
@@ -66,11 +68,11 @@ public class DeleteRowsEventV1Parser extends AbstractRowEventParser {
 	/**
 	 * 
 	 */
-	protected List<Row> parseRows(XInputStream is, TableMapEvent tme, DeleteRowsEventV1 dre)
+	protected List<Row> parseRows(XInputStream is, TableMapEvent tme, WriteRowsEventV2 wre)
 	throws IOException {
 		final List<Row> r = new LinkedList<Row>();
 		while(is.available() > 0) {
-			r.add(parseRow(is, tme, dre.getUsedColumns()));
+			r.add(parseRow(is, tme, wre.getUsedColumns()));
 		}
 		return r;
 	}

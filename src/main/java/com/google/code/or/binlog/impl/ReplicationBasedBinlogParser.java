@@ -26,6 +26,8 @@ import com.google.code.or.binlog.BinlogEventParser;
 import com.google.code.or.binlog.impl.event.BinlogEventV4HeaderImpl;
 import com.google.code.or.io.XInputStream;
 import com.google.code.or.net.Transport;
+import com.google.code.or.net.impl.packet.EOFPacket;
+import com.google.code.or.net.impl.packet.ErrorPacket;
 import com.google.code.or.net.impl.packet.OKPacket;
 
 /**
@@ -92,9 +94,17 @@ public class ReplicationBasedBinlogParser extends AbstractBinlogParser {
 				is.setReadLimit(packetLength); // Ensure the packet boundary
 				
 				//
-				final int packetMarker = is.readInt(1); // 0x00
-				if(packetMarker != OKPacket.PACKET_MARKER) {
-					throw new NestableRuntimeException("assertion failed, invalid packet marker: " + packetMarker);
+				final int packetMarker = is.readInt(1);
+				if(packetMarker != OKPacket.PACKET_MARKER) { // 0x00
+					if((byte)packetMarker == ErrorPacket.PACKET_MARKER) {
+						final ErrorPacket packet = ErrorPacket.valueOf(packetLength, packetSequence, packetMarker, is);
+						throw new NestableRuntimeException(packet.toString());
+					} else if((byte)packetMarker == EOFPacket.PACKET_MARKER) {
+						final EOFPacket packet = EOFPacket.valueOf(packetLength, packetSequence, packetMarker, is);
+						throw new NestableRuntimeException(packet.toString());
+					} else {
+						throw new NestableRuntimeException("assertion failed, invalid packet marker: " + packetMarker);
+					}
 				}
 				
 				// Parse the event header

@@ -84,6 +84,7 @@ public abstract class AbstractRowEventParser extends AbstractBinlogEventParser {
 	protected Row parseRow(XInputStream is, TableMapEvent tme, BitColumn usedColumns) 
 	throws IOException {
 		//
+		int unusedColumnCount = 0;
 		final byte[] types = tme.getColumnTypes();
 		final Metadata metadata = tme.getColumnMetadata();
 		final BitColumn nullColumns = is.readBit(types.length, true);
@@ -115,8 +116,9 @@ public abstract class AbstractRowEventParser extends AbstractBinlogEventParser {
 			
 			//
 			if(!usedColumns.get(i)) {
+				unusedColumnCount++;
 				continue;
-			} else if(nullColumns.get(i)) {
+			} else if(nullColumns.get(i - unusedColumnCount)) {
 				columns.add(NullColumn.valueOf(type));
 				continue;
 			}

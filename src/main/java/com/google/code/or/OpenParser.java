@@ -154,11 +154,11 @@ public class OpenParser {
 		r.registgerEventParser(new IncidentEventParser());
 		r.registgerEventParser(new TableMapEventParser());
 		r.registgerEventParser(new WriteRowsEventParser());
-		r.registgerEventParser(new DeleteRowsEventParser());
 		r.registgerEventParser(new UpdateRowsEventParser());
+		r.registgerEventParser(new DeleteRowsEventParser());
 		r.registgerEventParser(new WriteRowsEventV2Parser());
-		r.registgerEventParser(new DeleteRowsEventV2Parser());
 		r.registgerEventParser(new UpdateRowsEventV2Parser());
+		r.registgerEventParser(new DeleteRowsEventV2Parser());
 		r.registgerEventParser(new FormatDescriptionEventParser());
 		
 		//
